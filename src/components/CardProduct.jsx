@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 const CardProduct = ({id, category, title, price, images}) => {
 	return (
-		<div className="col-4">
+		<div className="col-4" key={id}>
 		<div className="card">
 			<img src={images[0]} className="card-img-top img-fluid" alt="Босоножки 'MYER'"></img>
 			<div className="card-body">
