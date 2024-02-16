@@ -11,7 +11,7 @@ const Bestsellers = () => {
 		dispatch(getTopSales())
 		
 	},[])
-
+	console.log(ArrayHits)
 	return (
 		<>
 			<section className="top-sales">
