@@ -74,6 +74,7 @@ const stateCatalog = createSlice({
 		setID(state, action) {
 			state.categoryID = action.payload
 		},
+
 		setTextFormCatalog(state, action) {
 			state.textSearch = action.payload
 		}

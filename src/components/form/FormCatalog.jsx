@@ -3,7 +3,7 @@ import { useDispatch, useSelector} from "react-redux";
 import { searchCatalog, setTextFormCatalog } from "../../redux/stateCatalog";
 
 const FormCatalog = () => {
-	const textState = useSelector((state) => state.state.hitsCatalog)
+	const textState = useSelector((state) => state.state.textSearch)
 	const [text, setText] = useState('')
 	const dispatch = useDispatch();
 

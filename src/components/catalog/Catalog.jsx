@@ -5,7 +5,6 @@ import { getAllCategorys, getCatalogCategorys, getCategorysID, getMoreCatalog, s
 
 const Catalog = () => {
 	const {catalog, categorys, categoryID, textSearch} = useSelector((state) => state.state);
-	// const [categorieID, setID] = useState(0);
 	const [visionMore, setVision] = useState(false)
 	const dispatch = useDispatch();
 
