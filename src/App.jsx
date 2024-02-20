@@ -4,6 +4,7 @@ import NotFound from "./components/static-pages/NotFound"
 import AboutStore from "./components/static-pages/AboutStore"
 import MainPage from "./components/pages/MainPage"
 import CatalogPage from "./components/catalog/CatalogPage"
+import ProductPage from "./components/product/ProductPage"
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
       <Route path="/catalog.html"  Component={CatalogPage}/>
       <Route path="/about.html"  Component={AboutStore}/>
       <Route path="/contacts.html"  Component={Contacts}/>
+      <Route path="/catalog/:id.html." Component={ProductPage} />
       <Route path="*"  element={NotFound}/>
     </Routes>
   )

@@ -12,16 +12,17 @@ const FromHeader = () => {
 
 	function hendlerChange(event) {
 		const target = event.target;
-		console.log(target.value)
-		setText(target.value)
+		setText(target.value);
 	}
 
 	function hendlerClick() {
-		if(visible === 'invisible') {
+		if (visible === 'invisible') {
 			setVisible('visible')
+		} else if (text === '') {
+			setVisible('invisible');
 		} else {
 			dispatch(setTextFormCatalog(text));
-			navigation('/catalog.html')
+			navigation('/catalog.html');
 		}
 	}
 

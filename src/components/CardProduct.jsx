@@ -1,6 +1,15 @@
-import { NavLink } from "react-router-dom";
-
+import { useDispatch} from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { getPorduct } from "../redux/stateProduct";
 const CardProduct = ({id, category, title, price, images}) => {
+	const dispatch = useDispatch();
+	const navigation = useNavigate();
+
+	function hendlerClick(idProduct){
+		dispatch(getPorduct(idProduct));
+		navigation(`/catalog/${id}.html.`)
+	}
+
 	return (
 		<div className="col-4" key={id}>
 		<div className="card">
@@ -8,7 +17,7 @@ const CardProduct = ({id, category, title, price, images}) => {
 			<div className="card-body">
 				<p className="card-text">{title}</p>
 				<p className="card-text">{price}</p>
-				<NavLink to={`/products/${id}`}><button className="btn btn-outline-primary">Заказать</button></NavLink>
+				<button className="btn btn-outline-primary" onClick={() => hendlerClick(id)}>Заказать</button>
 				{/* <a href="/products/1.html" className="btn btn-outline-primary">Заказать</a> */}
 			</div>
 		</div>
