@@ -5,13 +5,13 @@ import { getTopSales } from "../../redux/stateCatalog";
 
 
 const Bestsellers = () => {
-	const ArrayHits = useSelector((state) => state.state.hitsCatalog)
+	const ArrayHits = useSelector((state) => state.state.hitsCatalog);
 	const dispatch = useDispatch();
 	useEffect(() => {
-		dispatch(getTopSales())
+		dispatch(getTopSales());
 		
-	},[])
-	console.log(ArrayHits)
+	},[]);
+
 	return (
 		<>
 			<section className="top-sales">

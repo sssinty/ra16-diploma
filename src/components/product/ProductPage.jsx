@@ -1,18 +1,29 @@
 import { useState } from "react";
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
 import Preloader from "../Preloader";
-
+import { addProduct } from "../../redux/stateCart";
+import { useNavigate } from "react-router-dom";
 
 const ProductPage = () => {
 	const {product, statusLoade} = useSelector((goods) => goods.goods);
 	const [quantity, setQuantity] = useState(1);
-	const [selected, setSelected] = useState();
+	const [selectedSize, setSelected] = useState(-1);
+	const navigation = useNavigate();
+	const dispatch = useDispatch();
 
-	function selectedSize(event) {
-		const target = event.target
-		console.log(target.id)
-		setSelected(target.id)
+	function hendlerClickCart() {
+		const orderProduct = {
+			title: product.title,
+			sizes: product.sizes[selectedSize],
+			pairsQuantity: quantity,
+			price: product.price,
+			id: product.id
+		}
+
+		dispatch(addProduct(orderProduct));
+		navigation("/cart.html.");
 	}
+
 	return statusLoade != 'loade' ?
 		<Preloader /> 
 		:
@@ -58,10 +69,10 @@ const ProductPage = () => {
 										<p>Размеры в наличии: {product.sizes.map((size, id) => {
 											if(size.available === true) {
 												return <a 
-													className={selected === id ? "catalog-item-size selected" : "catalog-item-size"}
+													className={selectedSize === id ? "catalog-item-size selected" : "catalog-item-size"}
 													key={id}
 													id={id}
-													onClick={() => id === selected ? setSelected(-1) : setSelected(id)}
+													onClick={() => id === selectedSize ? setSelected(-1) : setSelected(id)}
 												>{size.size}</a>
 											}
 										})}</p>
@@ -72,7 +83,7 @@ const ProductPage = () => {
 												</span>
 										</p>
 									</div>
-									<button className="btn btn-danger btn-block btn-lg">В корзину</button>
+									<button disabled={selectedSize === -1 ? true : false} className="btn btn-danger btn-block btn-lg" onClick={hendlerClickCart}>В корзину</button>
 								</>
 							: ''
 							} 
@@ -81,5 +92,5 @@ const ProductPage = () => {
 		</section>
 	
 }
-{/* <span className="catalog-item-size selected">18 US</span>  */}
+
 export default ProductPage;

@@ -27,7 +27,6 @@ const stateProduct = createSlice({
 			state.error = null
 		})
 		.addCase(getPorduct.fulfilled, (state, action) => {
-			console.log(action.payload)
 			state.statusLoade = 'loade',
 			state.product = action.payload
 		})
@@ -38,4 +37,4 @@ const stateProduct = createSlice({
 	}
 })
 
-export default stateProduct .reducer
+export default stateProduct.reducer;

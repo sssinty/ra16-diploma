@@ -2,7 +2,7 @@ import Banner from "../banner/Banner";
 import Footer from "../footer/Footer";
 import FormCatalog from "../form/FormCatalog";
 import Header from "../header/Header";
-import Catalog from "./Catalog";
+import Catalog from "../catalog/Catalog";
 
 const CatalogPage = () => {
 	return (

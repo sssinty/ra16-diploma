@@ -15,6 +15,10 @@ const FromHeader = () => {
 		setText(target.value);
 	}
 
+	function hendlerSubmit (event) {
+		event.preventDefault()
+	}
+
 	function hendlerClick() {
 		if (visible === 'invisible') {
 			setVisible('visible')
@@ -29,7 +33,7 @@ const FromHeader = () => {
 	return (
 		<>
 			<div data-id="search-expander" className="header-controls-pic header-controls-search" onClick={hendlerClick}></div>
-			<form data-id="search-form" className={`header-controls-search-form form-inline ${visible}`}>
+			<form data-id="search-form" className={`header-controls-search-form form-inline ${visible}`} onSubmit={hendlerSubmit}>
 				<input className="form-control" placeholder="Поиск" onChange={hendlerChange}></input>
 			</form>
 		</>
