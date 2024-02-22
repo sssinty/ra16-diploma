@@ -14,7 +14,8 @@ const initialState = {
 	error: null,
 	cartProduct: [],
 	order: {},
-	fullPrice: 0
+	fullPrice: 0,
+	quantityPositions: 0
 }
 
 const stateCart = createSlice({
@@ -34,6 +35,7 @@ const stateCart = createSlice({
 					state.fullPrice = state.fullPrice + action.payload.price;
 				})
 			}
+			state.quantityPositions = state.cartProduct.length;
 		},
 
 		removeProduct(state, action) {
@@ -43,6 +45,7 @@ const stateCart = createSlice({
 				}
 			})
 			state.cartProduct = state.cartProduct.filter((product) => product.id === action.payload.id);
+			state.quantityPositions = state.cartProduct.length;
 		}
 	}, extraReducers: (bulider) => {
 		bulider
