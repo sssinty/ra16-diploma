@@ -3,9 +3,10 @@ import CardProduct from "../CardProduct";
 import { useDispatch, useSelector} from "react-redux";
 import { getAllCategorys, getCatalogCategorys, getCategorysID, getMoreCatalog, searchCatalog, setID } from "../../redux/stateCatalog";
 import { Link } from "react-router-dom";
+import Preloader from "../Preloader";
 
 const Catalog = () => {
-	const {catalog, categorys, categoryID, textSearch} = useSelector((state) => state.state);
+	const {catalog, categorys, categoryID, textSearch, statusLoadeCatalog} = useSelector((state) => state.state);
 	const [visionMore, setVision] = useState(false);
 	const dispatch = useDispatch();
 
@@ -45,11 +46,17 @@ const Catalog = () => {
 					)
 				})}
 			</ul>
-			<div className="row">
-				{catalog.map((elem, keyID) => {
-					return <CardProduct id={elem.id} images={elem.images} price={elem.price} title={elem.title} key={keyID} />
-				})}
-			</div>
+
+			{statusLoadeCatalog !== 'loade' ? 
+				<Preloader /> 
+			:
+				<div className="row">
+					{catalog.map((elem, keyID) => {
+						return <CardProduct id={elem.id} images={elem.images} price={elem.price} title={elem.title} key={keyID} />
+					})}
+				</div>
+			}
+
 			<div className="text-center">
 				{!visionMore ? <button className="btn btn-outline-primary" onClick={handlerClikMore}>Загрузить ещё</button> : ''}
 			</div>

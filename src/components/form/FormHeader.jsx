@@ -16,12 +16,12 @@ const FromHeader = () => {
 	}
 
 	function hendlerSubmit (event) {
-		event.preventDefault()
+		event.preventDefault();
 	}
 
 	function hendlerClick() {
 		if (visible === 'invisible') {
-			setVisible('visible')
+			setVisible('visible');
 		} else if (text === '') {
 			setVisible('invisible');
 		} else {

@@ -8,25 +8,25 @@ const FormCatalog = () => {
 	const dispatch = useDispatch();
 
 	function hendlerChange(event) {
-		const target = event.target
-		setText(target.value)
+		const target = event.target;
+		setText(target.value);
 	}
 
 	function hendlerSubmit (event) {
-		event.preventDefault()
+		event.preventDefault();
 	}
 
 	useEffect(() => {
-		setText(textState)
-	},[])
+		setText(textState);
+	},[]);
 
 	useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
 			dispatch(searchCatalog(text)),
 			dispatch(setTextFormCatalog(text))
-    }, 3000)
-    return () => clearTimeout(delayDebounceFn)
-  }, [text])
+    }, 3000);
+    return () => clearTimeout(delayDebounceFn);
+  }, [text]);
 
 	return (
 		<>

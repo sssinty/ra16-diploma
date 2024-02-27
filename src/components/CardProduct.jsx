@@ -1,6 +1,7 @@
 import { useDispatch} from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getPorduct } from "../redux/stateProduct";
+
 const CardProduct = ({id, title, price, images, keyID}) => {
 	const dispatch = useDispatch();
 	const navigation = useNavigate();

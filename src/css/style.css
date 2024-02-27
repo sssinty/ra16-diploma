@@ -23,8 +23,6 @@ section {
 }
 
 
-
-
 /* Common Styles */
 .invisible {
   opacity: 0;
@@ -211,6 +209,20 @@ section {
   box-shadow: none;
 }
 
+/* Card Img */
+
+.card-img-top {
+  width: 100%;
+  height: 350px; 
+  border-top-left-radius: calc(0.25rem - 1px);
+  border-top-right-radius: calc(0.25rem - 1px);
+}
+
+.col-4 {
+  position: relative;
+  width: 100%;
+  padding: 15px
+}
 /* Footer */
 .footer {
   padding: 0 25px;
@@ -304,4 +316,11 @@ h2, .h2 {
 .btn-outline-primary:hover {
   background-color: #727e86;
   border-color: #727e86;
+}
+
+.order-complite {
+  display: flex;
+  flex-wrap: wrap;
+  place-content: space-between center;
+  height: 200px;
 }

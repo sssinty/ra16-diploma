@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios'
-
+import axios from 'axios';
 
 export const getTopSales = createAsyncThunk(
 	'get/topSales',
@@ -14,7 +13,7 @@ export const getCatalogCategorys = createAsyncThunk(
 	'get/Categorys',
 	async () => {
 		const response = await axios.get('http://localhost:7070/api/categories');
-		return response.data
+		return response.data;
 	}
 );
 
@@ -22,7 +21,7 @@ export const getAllCategorys = createAsyncThunk(
 	'get/AllCategorys',
 	async () => {
 		const response = await axios.get('http://localhost:7070/api/items');
-		return response.data
+		return response.data;
 	}
 );
 
@@ -30,7 +29,7 @@ export const getCategorysID = createAsyncThunk(
 	'get/CategorysID',
 	async (id) => {
 		const response = await axios.get(`http://localhost:7070/api/items?categoryId=${id}`);
-		return response.data
+		return response.data;
 	}
 );
 
@@ -40,10 +39,10 @@ export const getMoreCatalog = createAsyncThunk(
 		console.log(id)
 		if(id === 0) {
 			const response = await axios.get('http://localhost:7070/api/items?offset=6');
-			return response.data
+			return response.data;
 		} else {
 			const response = await axios.get(`http://localhost:7070/api/items?categoryId=${id}&offset=6`);
-			return response.data
+			return response.data;
 		}
 	}
 );
@@ -52,12 +51,13 @@ export const searchCatalog = createAsyncThunk(
 	'searchCatalog',
 	async (text) => {
 		const response = await axios.get(`http://localhost:7070/api/items?q=${text}`)
-		console.log(response.data)
-		return response.data
+		return response.data;
 	}
 )
 
 const initialState = {
+	statusLoadeCatalog: 'loading',
+	statusLoadeBestsellers: 'loading',
 	statusLoade: 'loading',
 	error: null, 
 	hitsCatalog: [],
@@ -72,25 +72,26 @@ const stateCatalog = createSlice({
 	initialState,
 	reducers: {
 		setID(state, action) {
-			state.categoryID = action.payload
+			state.categoryID = action.payload;
 		},
 
 		setTextFormCatalog(state, action) {
-			state.textSearch = action.payload
+			state.textSearch = action.payload;
 		}
+
 	},
 	extraReducers: (bulider) => {
 		bulider
 		.addCase(getTopSales.pending, (state) => {
-			state.statusLoade = 'loading',
+			state.statusLoadeBestsellers = 'loading',
 			state.error = null
 		})
 		.addCase(getTopSales.fulfilled, (state, action) => {
-			state.statusLoade = 'loade',
+			state.statusLoadeBestsellers = 'loade',
 			state.hitsCatalog = action.payload
 		})
 		.addCase(getTopSales.rejected, (state, action) => {
-			state.statusLoade = 'failed',
+			state.statusLoadeBestsellers = 'failed',
 			state.error = action.payload
 		})
 
@@ -112,47 +113,47 @@ const stateCatalog = createSlice({
 		// Catalog All 
 
 		.addCase(getAllCategorys.pending, (state) => {
-			state.statusLoade = 'loading',
+			state.statusLoadeCatalog = 'loading',
 			state.error = null
 		})
 		.addCase(getAllCategorys.fulfilled, (state, action) => {
-			state.statusLoade = 'loade',
+			state.statusLoadeCatalog = 'loade',
 			state.catalog = action.payload
 		})
 		.addCase(getAllCategorys.rejected, (state, action) => {
-			state.statusLoade = 'failed',
+			state.statusLoadeCatalog = 'failed',
 			state.error = action.payload
 		})
 
 		// Catigories get by id 
 
 		.addCase(getCategorysID.pending, (state) => {
-			state.statusLoade = 'loading',
+			state.statusLoadeCatalog = 'loading',
 			state.error = null
 		})
 		.addCase(getCategorysID.fulfilled, (state, action) => {
-			state.statusLoade = 'loade',
+			state.statusLoadeCatalog = 'loade',
 			state.catalog = action.payload
 		})
 		.addCase(getCategorysID.rejected, (state, action) => {
-			state.statusLoade = 'failed',
+			state.statusLoadeCatalog = 'failed',
 			state.error = action.payload
 		})
 
 		// More catalogs get 
 
 		.addCase(getMoreCatalog.pending, (state) => {
-			state.statusLoade = 'loading',
+			state.statusLoadeCatalog = 'loading',
 			state.error = null
 		})
 		.addCase(getMoreCatalog.fulfilled, (state, action) => {
-			state.statusLoade = 'loade',
+			state.statusLoadeCatalog = 'loade',
 			action.payload.map((elem) => {
 				state.catalog.push(elem)
 			})
 		})
 		.addCase(getMoreCatalog.rejected, (state, action) => {
-			state.statusLoade = 'failed',
+			state.statusLoadeCatalog = 'failed',
 			state.error = action.payload
 		})
 
@@ -164,7 +165,6 @@ const stateCatalog = createSlice({
 		})
 		.addCase(searchCatalog.fulfilled, (state, action) => {
 			state.statusLoade = 'loade',
-			console.log(action.payload, state.categoryID)
 			state.categoryID === 0 ? state.catalog = action.payload : state.catalog = action.payload.filter((elem) => elem.category === state.categoryID)
 		})
 		.addCase(searchCatalog.rejected, (state, action) => {
@@ -175,4 +175,4 @@ const stateCatalog = createSlice({
 })
 
 export  const {setID, setTextFormCatalog} = stateCatalog.actions;
-export default stateCatalog.reducer
+export default stateCatalog.reducer;
