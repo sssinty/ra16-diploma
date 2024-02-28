@@ -4,9 +4,7 @@ import axios from 'axios'
 export const postOrder = createAsyncThunk(
 	'post/Order',
 	async (order) => {
-		console.log(order)
 		const response = await axios.post("http://localhost:7070/api/order", order);
-		console.log(response.data)
 		return response.data
 	}
 )
@@ -28,10 +26,9 @@ const stateCart = createSlice({
 				state.cartProduct.push(action.payload);
 			} else {
 				state.cartProduct.map((product) => {
-				product.title === action.payload.title && product.sizes.size === action.payload.sizes.size ? 
-					state.cartProduct = state.cartProduct.map((product) => ({ ...product, pairsQuantity: product.pairsQuantity + action.payload.pairsQuantity }))
-				: 
-					state.cartProduct.push(action.payload);
+					product.title === action.payload.title && product.sizes.size === action.payload.sizes.size 
+					? state.cartProduct = state.cartProduct.map((product) => ({ ...product, pairsQuantity: product.pairsQuantity + action.payload.pairsQuantity }))
+					: state.cartProduct.push(action.payload);
 				});
 			}
 

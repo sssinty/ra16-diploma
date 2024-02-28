@@ -12,7 +12,6 @@ const ProductPage = () => {
 	const dispatch = useDispatch();
 
 	function hendlerClickCart() {
-		console.log(product)
 		const orderProduct = {
 			title: product.title,
 			sizes: product.sizes[selectedSize],
@@ -25,10 +24,9 @@ const ProductPage = () => {
 		navigation("/cart.html.");
 	}
 
-	return statusLoade !== 'loade' ?
-		<Preloader /> 
-		:
-		<section className="catalog-item">
+	return statusLoade !== 'loade'
+		?	<Preloader /> 
+		: <section className="catalog-item">
 			<h2 className="text-center">{product.title}</h2>
 			<div className="row">
 				<div className="col-5">

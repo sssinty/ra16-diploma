@@ -324,3 +324,9 @@ h2, .h2 {
   place-content: space-between center;
   height: 200px;
 }
+
+.not-found-catalog {
+  display: flex;
+  flex-wrap: wrap;
+  place-content: space-between center;
+}

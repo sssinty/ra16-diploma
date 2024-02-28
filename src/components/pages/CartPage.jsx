@@ -71,7 +71,6 @@ const CartPage = () => {
 		dispatch(postOrder(order));
 	}
 
-
 	useEffect(() => {
 		if(statusLoade === 'loade') {
 			const delayDebounceFn = setTimeout(() => {
@@ -86,18 +85,18 @@ const CartPage = () => {
 		<>
 			<Header />
 			<Banner />
-			{statusLoade === 'loade' ?
-				<div className="order-complite">
+			{statusLoade === 'loade'
+			?	<div className="order-complite">
 					<h2>Спасибо за заказ!</h2>
 				</div>
-			:
-				<main className="container">
+
+			: <main className="container">
 					<div className="row">
 						<div className="col">
 							<section className="cart">
 							<h2 className="text-center">Корзина</h2>
 								<table className="table table-bordered">
-									<thead>
+									<thead >
 										<tr>
 											<th scope="col">#</th>
 											<th scope="col">Название</th>

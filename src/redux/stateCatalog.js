@@ -36,7 +36,6 @@ export const getCategorysID = createAsyncThunk(
 export const getMoreCatalog = createAsyncThunk(
 	'get/MoreCatalog',
 	async (id) => {
-		console.log(id)
 		if(id === 0) {
 			const response = await axios.get('http://localhost:7070/api/items?offset=6');
 			return response.data;
@@ -59,7 +58,8 @@ const initialState = {
 	statusLoadeCatalog: 'loading',
 	statusLoadeBestsellers: 'loading',
 	statusLoade: 'loading',
-	error: null, 
+	statusLoadeCategorys: 'loading',
+	error: null,
 	hitsCatalog: [],
 	categorys: [], 
 	catalog: [] ,
@@ -84,7 +84,7 @@ const stateCatalog = createSlice({
 		bulider
 		.addCase(getTopSales.pending, (state) => {
 			state.statusLoadeBestsellers = 'loading',
-			state.error = null
+			state.errorBestsellers = null
 		})
 		.addCase(getTopSales.fulfilled, (state, action) => {
 			state.statusLoadeBestsellers = 'loade',
@@ -92,25 +92,25 @@ const stateCatalog = createSlice({
 		})
 		.addCase(getTopSales.rejected, (state, action) => {
 			state.statusLoadeBestsellers = 'failed',
-			state.error = action.payload
+			state.errorBestsellers = action.payload
 		})
 
 		// Categories catalog
 
 		.addCase(getCatalogCategorys.pending, (state) => {
-			state.statusLoade = 'loading',
+			state.statusLoadeCategorys = 'loading',
 			state.error = null
 		})
 		.addCase(getCatalogCategorys.fulfilled, (state, action) => {
-			state.statusLoade = 'loade',
+			state.statusLoadeCategorys = 'loade',
 			state.categorys = action.payload
 		})
 		.addCase(getCatalogCategorys.rejected, (state, action) => {
-			state.statusLoade = 'failed',
+			state.statusLoadeCategorys = 'failed',
 			state.error = action.payload
 		})
 
-		// Catalog All 
+		// Categorys All 
 
 		.addCase(getAllCategorys.pending, (state) => {
 			state.statusLoadeCatalog = 'loading',
