@@ -84,7 +84,6 @@ const CartPage = () => {
 	return(
 		<>
 			<Header />
-			<Banner />
 			{statusLoade === 'loade'
 			?	<div className="order-complite">
 					<h2>Спасибо за заказ!</h2>
@@ -93,6 +92,7 @@ const CartPage = () => {
 			: <main className="container">
 					<div className="row">
 						<div className="col">
+							<Banner />
 							<section className="cart">
 							<h2 className="text-center">Корзина</h2>
 								<table className="table table-bordered">

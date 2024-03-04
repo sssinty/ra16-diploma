@@ -13,10 +13,12 @@ const Catalog = () => {
 		textSearch, 
 		statusLoadeCatalog,
 		statusLoadeCategorys,
+		statusLoadeMore
 	} = useSelector((state) => state.state);
 
 	const [isActive, setActive] = useState(0)
 	const [visionMore, setVision] = useState(false);
+	const [unloade, setLoade] = useState(false);
 	const dispatch = useDispatch();
 
 	useEffect(() =>{
@@ -29,6 +31,13 @@ const Catalog = () => {
 			setVision(true);
 		}
 	}, [catalog]);
+
+	useEffect(() => {
+		const delayDebounceFn = setTimeout(() => {
+			statusLoadeCatalog !== 'loade' && setLoade(true)
+		}, 11000)
+		return () => clearTimeout(delayDebounceFn);
+	},[statusLoadeCatalog]);
 
 	function handlerClikcCategorys( event ) {
 		const id = event.target.parentNode.id;
@@ -46,6 +55,11 @@ const Catalog = () => {
 	function handlerClikMore() {
 		dispatch(getMoreCatalog(categoryID));
 		setVision(true);
+	}
+	
+	function hendlerClickReboot () {
+		dispatch(getCatalogCategorys());
+		setLoade(false)
 	}
 
 	return(
@@ -67,13 +81,17 @@ const Catalog = () => {
 			}
 
 			{statusLoadeCatalog !== 'loade'
-			? <Preloader /> 
+			? !unloade 
+				?	<Preloader />  
+				: <div className="text-center">
+						<h3>Что-то пошло не так</h3>
+						<button className="btn btn-outline-primary" onClick={hendlerClickReboot}>Перезагрузить</button>
+					</div>
 			: (
 					catalog.length === 0 
 					? <div className="not-found-catalog">
 							<h3>Ничего не найдено</h3> 
 						</div>
-
 					: <>
 							<div className="row">
 								{catalog.map((elem, keyID) => {
@@ -81,6 +99,7 @@ const Catalog = () => {
 								})}
 							</div>
 							<div className="text-center">
+								{visionMore && statusLoadeMore !== 'loade' && <Preloader /> }
 								{!visionMore && <button className="btn btn-outline-primary" onClick={handlerClikMore}>Загрузить ещё</button>}
 							</div>
 						</>

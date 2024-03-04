@@ -15,9 +15,9 @@ const CardProduct = ({id, title, price, images, keyID}) => {
 		<div className="col-4" key={keyID}>
 		<div className="card">
 			<img src={images[0]} className="card-img-top img-fluid" alt="Босоножки 'MYER'"></img>
-			<div className="card-body">
+			<div className="card-body-product">
 				<p className="card-text">{title}</p>
-				<p className="card-text">{price}</p>
+				<p className="card-text">{price} {`\u{20BD}`}</p>
 				<button className="btn btn-outline-primary" onClick={() => hendlerClick(id)}>Заказать</button>
 			</div>
 		</div>

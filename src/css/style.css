@@ -330,3 +330,14 @@ h2, .h2 {
   flex-wrap: wrap;
   place-content: space-between center;
 }
+
+.card-body-product {
+  width: 350px;
+  height: 180px;
+  padding: 1.25rem;
+}
+
+.card-text {
+  width: 310px;
+  height: 40px;
+}

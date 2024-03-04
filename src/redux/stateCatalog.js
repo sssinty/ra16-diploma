@@ -59,6 +59,7 @@ const initialState = {
 	statusLoadeBestsellers: 'loading',
 	statusLoade: 'loading',
 	statusLoadeCategorys: 'loading',
+	statusLoadeMore: 'loading',
 	error: null,
 	hitsCatalog: [],
 	categorys: [], 
@@ -143,17 +144,17 @@ const stateCatalog = createSlice({
 		// More catalogs get 
 
 		.addCase(getMoreCatalog.pending, (state) => {
-			state.statusLoadeCatalog = 'loading',
+			state.statusLoadeMore = 'loading',
 			state.error = null
 		})
 		.addCase(getMoreCatalog.fulfilled, (state, action) => {
-			state.statusLoadeCatalog = 'loade',
+			state.statusLoadeMore = 'loade',
 			action.payload.map((elem) => {
 				state.catalog.push(elem)
 			})
 		})
 		.addCase(getMoreCatalog.rejected, (state, action) => {
-			state.statusLoadeCatalog = 'failed',
+			state.statusLoadeMore = 'failed',
 			state.error = action.payload
 		})
 

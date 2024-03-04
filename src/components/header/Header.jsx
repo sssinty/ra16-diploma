@@ -11,7 +11,7 @@ const Header = () => {
 			<div className="col">
 				<nav className="navbar navbar-expand-sm navbar-light bg-light">
 					<NavLink className="navbar-brand" to="/">
-						<img src="src\assets\header-logo.png" alt="Bosa Noga"></img>
+						<img src="..\src\assets\header-logo.png" alt="Bosa Noga"></img>
 					</NavLink>
 					<div className="collapse navbar-collapse" id="navbarMain">
 						<ul className="navbar-nav mr-auto">
