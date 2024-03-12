@@ -6,34 +6,31 @@ import Preloader from "../Preloader";
 
 
 const Bestsellers = () => {
-	const {hitsCatalog, statusLoadeBestsellers} = useSelector((state) => state.state);
+	const {hitsCatalog, statusLoaderBestsellers} = useSelector((state) => state.state);
 	const dispatch = useDispatch();
-	const [unloade, setLoade] = useState(false);
+	const [unload, setLoader] = useState(false);
 	
 	useEffect(() => {
 		dispatch(getTopSales());
 	},[]);
 
 	useEffect(() => {
-		const delayDebounceFn = setTimeout(() => {
-			statusLoadeBestsellers !== 'loade' && setLoade(true)
-		}, 11000)
-		return () => clearTimeout(delayDebounceFn);
-	},[statusLoadeBestsellers]);
+		statusLoaderBestsellers === 'failed' && setLoader(true)
+	},[statusLoaderBestsellers]);
 
-	function hendlerClickReboot() {
+	function handlerClickReboot() {
 		dispatch(getTopSales());
-		setLoade(false)
+		setLoader(false)
 	}
 
 	return (
 		<>
-			{statusLoadeBestsellers !== 'loade'
-			? !unloade 
+			{statusLoaderBestsellers !== 'loade'
+			? !unload 
 				?	<Preloader />  
 				: <div className="text-center">
 						<h3>Что-то пошло не так</h3>
-						<button className="btn btn-outline-primary" onClick={hendlerClickReboot}>Перезагрузить</button>
+						<button className="btn btn-outline-primary" onClick={handlerClickReboot}>Перезагрузить</button>
 					</div>
 
 			:	<section className="top-sales">

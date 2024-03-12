@@ -1,108 +1,122 @@
 import { useEffect, useState } from "react";
 import CardProduct from "../CardProduct";
 import { useDispatch, useSelector} from "react-redux";
-import { getAllCategorys, getCatalogCategorys, getCategorysID, getMoreCatalog, searchCatalog, setID } from "../../redux/stateCatalog";
+import { getAllCategories, getCatalog, getCategoriesID, getMoreCatalog, searchCatalog, setID} from "../../redux/stateCatalog";
 import Preloader from "../Preloader";
 import { Link } from "react-router-dom";
 
 const Catalog = () => {
 	const {
 		catalog,
-		categorys,
-		categoryID, 
+		categories,
+		categoriesID, 
 		textSearch, 
-		statusLoadeCatalog,
-		statusLoadeCategorys,
-		statusLoadeMore
+		statusLoaderCatalog,
+		statusLoaderCategories,
+		statusLoaderMore,
+		statusLoaderSearch
 	} = useSelector((state) => state.state);
 
-	const [isActive, setActive] = useState(0)
+	const [isActiveID, setActiveID] = useState(0);
 	const [visionMore, setVision] = useState(false);
-	const [unloade, setLoade] = useState(false);
 	const dispatch = useDispatch();
 
 	useEffect(() =>{
-		dispatch(getAllCategorys());
-		dispatch(getCatalogCategorys());
+		dispatch(getAllCategories());
+		textSearch === "" && dispatch(getCatalog());
 	},[]);
 
 	useEffect(() => {
-		if(catalog.length === 0 && statusLoadeCatalog === 'loade') {
+		if(catalog.length === 0 && statusLoaderCatalog === 'loade') {
 			setVision(true);
 		}
 	}, [catalog]);
 
 	useEffect(() => {
-		const delayDebounceFn = setTimeout(() => {
-			statusLoadeCatalog !== 'loade' && setLoade(true)
-		}, 11000)
-		return () => clearTimeout(delayDebounceFn);
-	},[statusLoadeCatalog]);
+		statusLoaderCategories === 'failed' && dispatch(getAllCategories());
+	}, [statusLoaderCategories]);
 
-	function handlerClikcCategorys( event ) {
+	useEffect(() => {
+		statusLoaderMore === 'failed' && dispatch(getMoreCatalog(categoriesID));
+	}, [statusLoaderMore]);
+
+	useEffect(() => {
+		statusLoaderSearch === 'failed' && dispatch(searchCatalog(textSearch));
+	}, [statusLoaderSearch]);
+
+	function handlerClickCategories( event ) {
 		const id = event.target.parentNode.id;
-		
-		dispatch(getCategorysID(id));
-		dispatch(setID(Number(id)));
 
-		setActive(id);
-		setVision(false);
 		if(textSearch) {
 			dispatch(searchCatalog(textSearch));
+			dispatch(setID(Number(id)));
+
+			setActiveID(id);
+			setVision(false);
+		} else {
+			dispatch(getCategoriesID(id));
+			dispatch(setID(Number(id)));
+	
+			setActiveID(id);
+			setVision(false);
 		}
 	}
 
-	function handlerClikMore() {
-		dispatch(getMoreCatalog(categoryID));
+	function handlerClickMore() {
+		dispatch(getMoreCatalog(categoriesID));
 		setVision(true);
 	}
 	
-	function hendlerClickReboot () {
-		dispatch(getCatalogCategorys());
-		setLoade(false)
+	function handlerClickReboot () {
+		if(textSearch) {
+			dispatch(searchCatalog(textSearch));
+		} else {
+			isActiveID !== 0 ? dispatch(getCategoriesID(isActiveID)) : dispatch(getCatalog());
+		}
+		
 	}
 
 	return(
 		<>
-			{statusLoadeCategorys !== 'loade' 
+			{statusLoaderCategories !== 'loade' && categories.length === 0
 			? ''
 			: <ul className="catalog-categories nav justify-content-center">
 					<li className="nav-item" id='0'>
-						<Link className={Number(isActive) === 0 ? "nav-link active" : "nav-link"} onClick={handlerClikcCategorys}>Все</Link>
+						<Link className={Number(isActiveID) === 0 ? "nav-link active" : "nav-link"} onClick={handlerClickCategories}>Все</Link>
 					</li>
-					{categorys.map((elem, id) => {
+					{categories.map((elem, id) => {
 						return(
 							<li className="nav-item" key={id} id={elem.id}>
-								<Link className={Number(isActive) === elem.id ? "nav-link active" : "nav-link"}  onClick={handlerClikcCategorys}>{elem.title}</Link>
+								<Link className={Number(isActiveID) === elem.id ? "nav-link active" : "nav-link"}  onClick={handlerClickCategories}>{elem.title}</Link>
 							</li>
 						)
 					})}
 				</ul>
 			}
 
-			{statusLoadeCatalog !== 'loade'
-			? !unloade 
-				?	<Preloader />  
-				: <div className="text-center">
+			{statusLoaderCatalog !== 'loade'
+			? statusLoaderCatalog === 'failed'
+				?	<div className="text-center">
 						<h3>Что-то пошло не так</h3>
-						<button className="btn btn-outline-primary" onClick={hendlerClickReboot}>Перезагрузить</button>
+						<button className="btn btn-outline-primary" onClick={handlerClickReboot}>Перезагрузить</button>
 					</div>
+				: <Preloader /> 
 			: (
-					catalog.length === 0 
-					? <div className="not-found-catalog">
-							<h3>Ничего не найдено</h3> 
-						</div>
-					: <>
+				catalog.length !== 0 && statusLoaderCatalog === 'loade'
+					? <>
 							<div className="row">
 								{catalog.map((elem, keyID) => {
 									return <CardProduct id={elem.id} images={elem.images} price={elem.price} title={elem.title} key={keyID} />
 								})}
 							</div>
 							<div className="text-center">
-								{visionMore && statusLoadeMore !== 'loade' && <Preloader /> }
-								{!visionMore && <button className="btn btn-outline-primary" onClick={handlerClikMore}>Загрузить ещё</button>}
+								{visionMore && statusLoaderMore !== 'loade' && <Preloader /> }
+								{!visionMore && <button className="btn btn-outline-primary" onClick={handlerClickMore}>Загрузить ещё</button>}
 							</div>
-						</>
+						</>	
+					: <div className="not-found-catalog">
+							<h3>Ничего не найдено</h3> 
+						</div>
 				)
 			}
 		</>

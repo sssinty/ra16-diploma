@@ -3,16 +3,16 @@ import { useDispatch, useSelector} from "react-redux";
 import { searchCatalog, setTextFormCatalog } from "../../redux/stateCatalog";
 
 const FormCatalog = () => {
-	const textState = useSelector((state) => state.state.textSearch)
+	const textState = useSelector((state) => state.state.textSearch);
 	const [text, setText] = useState('')
 	const dispatch = useDispatch();
 
-	function hendlerChange(event) {
+	function handlerChange(event) {
 		const target = event.target;
 		setText(target.value);
 	}
 
-	function hendlerSubmit (event) {
+	function handlerSubmit (event) {
 		event.preventDefault();
 	}
 
@@ -30,8 +30,8 @@ const FormCatalog = () => {
 
 	return (
 		<>
-			<form className="catalog-search-form form-inline" onSubmit={hendlerSubmit}>
-        <input className="form-control" placeholder="Поиск" aria-autocomplete="list" value={text} onChange={hendlerChange}></input>
+			<form className="catalog-search-form form-inline" onSubmit={handlerSubmit}>
+        <input className="form-control" placeholder="Поиск" aria-autocomplete="list" value={text} onChange={handlerChange}></input>
       </form>
 		</>
 	)

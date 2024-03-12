@@ -10,7 +10,7 @@ export const postOrder = createAsyncThunk(
 )
 
 const initialState = {
-	statusLoade: 'loading',
+	statusLoader: 'loading',
 	error: null,
 	cartProduct: [],
 	fullPrice: 0,
@@ -51,20 +51,20 @@ const stateCart = createSlice({
 			state.cartProduct = [],
 			state.fullPrice = 0,
 			state.quantityPositions = 0,
-			state.statusLoade = 'loading'
+			state.statusLoader = 'loading'
 		}
 		
-	}, extraReducers: (bulider) => {
-		bulider
+	}, extraReducers: (builder) => {
+		builder
 		.addCase(postOrder.pending, (state) => {
-			state.statusLoade = 'loading',
+			state.statusLoader = 'loading',
 			state.error = null
 		})
 		.addCase(postOrder.fulfilled, (state) => {
-			state.statusLoade = 'loade'
+			state.statusLoader = 'loade'
 		})
 		.addCase(postOrder.rejected, (state, action) => {
-			state.statusLoade = 'failed',
+			state.statusLoader = 'failed',
 			state.error = action.payload
 		})
 	}

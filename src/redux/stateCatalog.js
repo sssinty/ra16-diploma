@@ -9,24 +9,24 @@ export const getTopSales = createAsyncThunk(
 	}
 );
 
-export const getCatalogCategorys = createAsyncThunk(
-	'get/Categorys',
+export const getAllCategories = createAsyncThunk(
+	'get/AllCategories',
 	async () => {
 		const response = await axios.get('http://localhost:7070/api/categories');
 		return response.data;
 	}
 );
 
-export const getAllCategorys = createAsyncThunk(
-	'get/AllCategorys',
+export const getCatalog = createAsyncThunk(
+	'get/Catalog',
 	async () => {
 		const response = await axios.get('http://localhost:7070/api/items');
 		return response.data;
 	}
 );
 
-export const getCategorysID = createAsyncThunk(
-	'get/CategorysID',
+export const getCategoriesID = createAsyncThunk(
+	'get/CategoriesID',
 	async (id) => {
 		const response = await axios.get(`http://localhost:7070/api/items?categoryId=${id}`);
 		return response.data;
@@ -55,16 +55,16 @@ export const searchCatalog = createAsyncThunk(
 )
 
 const initialState = {
-	statusLoadeCatalog: 'loading',
-	statusLoadeBestsellers: 'loading',
-	statusLoade: 'loading',
-	statusLoadeCategorys: 'loading',
-	statusLoadeMore: 'loading',
+	statusLoaderCatalog: 'loading',
+	statusLoaderBestsellers: 'loading',
+	statusLoaderCategories: 'loading',
+	statusLoaderMore: 'loading',
+	statusLoaderSearch: 'loading',
 	error: null,
 	hitsCatalog: [],
-	categorys: [], 
+	categories: [], 
 	catalog: [] ,
-	categoryID: 0,
+	categoriesID: 0,
 	textSearch: "",
 }
 
@@ -73,7 +73,7 @@ const stateCatalog = createSlice({
 	initialState,
 	reducers: {
 		setID(state, action) {
-			state.categoryID = action.payload;
+			state.categoriesID = action.payload;
 		},
 
 		setTextFormCatalog(state, action) {
@@ -81,95 +81,100 @@ const stateCatalog = createSlice({
 		}
 
 	},
-	extraReducers: (bulider) => {
-		bulider
+	extraReducers: (builder) => {
+		builder
 		.addCase(getTopSales.pending, (state) => {
-			state.statusLoadeBestsellers = 'loading',
+			state.statusLoaderBestsellers = 'loading',
 			state.errorBestsellers = null
 		})
 		.addCase(getTopSales.fulfilled, (state, action) => {
-			state.statusLoadeBestsellers = 'loade',
+			state.statusLoaderBestsellers = 'loade',
 			state.hitsCatalog = action.payload
 		})
 		.addCase(getTopSales.rejected, (state, action) => {
-			state.statusLoadeBestsellers = 'failed',
+			state.statusLoaderBestsellers = 'failed',
 			state.errorBestsellers = action.payload
 		})
 
 		// Categories catalog
 
-		.addCase(getCatalogCategorys.pending, (state) => {
-			state.statusLoadeCategorys = 'loading',
+		.addCase(getCatalog.pending, (state) => {
+			state.statusLoaderCatalog = 'loading',
 			state.error = null
 		})
-		.addCase(getCatalogCategorys.fulfilled, (state, action) => {
-			state.statusLoadeCategorys = 'loade',
-			state.categorys = action.payload
+		.addCase(getCatalog.fulfilled, (state, action) => {
+			state.statusLoaderCatalog = 'loade',
+			state.catalog = action.payload
 		})
-		.addCase(getCatalogCategorys.rejected, (state, action) => {
-			state.statusLoadeCategorys = 'failed',
+		.addCase(getCatalog.rejected, (state, action) => {
+			state.statusLoaderCatalog = 'failed',
 			state.error = action.payload
 		})
 
-		// Categorys All 
+		// Categories All 
 
-		.addCase(getAllCategorys.pending, (state) => {
-			state.statusLoadeCatalog = 'loading',
+		.addCase(getAllCategories.pending, (state) => {
+			state.statusLoaderCategories = 'loading',
 			state.error = null
 		})
-		.addCase(getAllCategorys.fulfilled, (state, action) => {
-			state.statusLoadeCatalog = 'loade',
-			state.catalog = action.payload
+		.addCase(getAllCategories.fulfilled, (state, action) => {
+			state.statusLoaderCategories = 'loade',
+			state.categories = action.payload
 		})
-		.addCase(getAllCategorys.rejected, (state, action) => {
-			state.statusLoadeCatalog = 'failed',
+		.addCase(getAllCategories.rejected, (state, action) => {
+			state.statusLoaderCategories = 'failed',
 			state.error = action.payload
 		})
 
-		// Catigories get by id 
+		// Categories get by id 
 
-		.addCase(getCategorysID.pending, (state) => {
-			state.statusLoadeCatalog = 'loading',
+		.addCase(getCategoriesID.pending, (state) => {
+			state.statusLoaderCatalog = 'loading',
 			state.error = null
 		})
-		.addCase(getCategorysID.fulfilled, (state, action) => {
-			state.statusLoadeCatalog = 'loade',
+		.addCase(getCategoriesID.fulfilled, (state, action) => {
+			state.statusLoaderCatalog = 'loade',
 			state.catalog = action.payload
 		})
-		.addCase(getCategorysID.rejected, (state, action) => {
-			state.statusLoadeCatalog = 'failed',
+		.addCase(getCategoriesID.rejected, (state, action) => {
+			state.statusLoaderCatalog = 'failed',
 			state.error = action.payload
 		})
 
 		// More catalogs get 
 
 		.addCase(getMoreCatalog.pending, (state) => {
-			state.statusLoadeMore = 'loading',
+			state.statusLoaderMore = 'loading',
 			state.error = null
 		})
 		.addCase(getMoreCatalog.fulfilled, (state, action) => {
-			state.statusLoadeMore = 'loade',
+			state.statusLoaderMore = 'loade',
 			action.payload.map((elem) => {
-				state.catalog.push(elem)
+				const textLowerCase = state.textSearch.toLowerCase();
+				if(state.textSearch !== "") {
+					elem.title.toLowerCase().includes(textLowerCase) && state.catalog.push(elem);
+				} else {
+					state.catalog.push(elem);
+				}
 			})
 		})
 		.addCase(getMoreCatalog.rejected, (state, action) => {
-			state.statusLoadeMore = 'failed',
+			state.statusLoaderMore = 'failed',
 			state.error = action.payload
 		})
 
 		// search catalog
 
 		.addCase(searchCatalog.pending, (state) => {
-			state.statusLoade = 'loading',
+			state.statusLoaderCatalog = 'loading',
 			state.error = null
 		})
 		.addCase(searchCatalog.fulfilled, (state, action) => {
-			state.statusLoade = 'loade',
-			state.categoryID === 0 ? state.catalog = action.payload : state.catalog = action.payload.filter((elem) => elem.category === state.categoryID)
+			state.statusLoaderCatalog = 'loade',
+			state.categoriesID === 0 ? state.catalog = action.payload : state.catalog = action.payload.filter((elem) => state.categoriesID === elem.category)
 		})
 		.addCase(searchCatalog.rejected, (state, action) => {
-			state.statusLoade = 'failed',
+			state.statusLoaderCatalog = 'failed',
 			state.error = action.payload
 		})
 	}

@@ -10,31 +10,31 @@ const FromHeader = () => {
 	const [visible, setVisible] = useState('invisible');
 
 
-	function hendlerChange(event) {
+	function handlerChange(event) {
 		const target = event.target;
 		setText(target.value);
 	}
 
-	function hendlerSubmit (event) {
+	function handlerSubmit (event) {
 		event.preventDefault();
 	}
 
-	function hendlerClick() {
+	function handlerClick() {
 		if (visible === 'invisible') {
 			setVisible('visible');
 		} else if (text === '') {
 			setVisible('invisible');
 		} else {
 			dispatch(setTextFormCatalog(text));
-			navigation('/catalog.html');
+			navigation('/catalog');
 		}
 	}
 
 	return (
 		<>
-			<div data-id="search-expander" className="header-controls-pic header-controls-search" onClick={hendlerClick}></div>
-			<form data-id="search-form" className={`header-controls-search-form form-inline ${visible}`} onSubmit={hendlerSubmit}>
-				<input className="form-control" placeholder="Поиск" onChange={hendlerChange}></input>
+			<div data-id="search-expander" className="header-controls-pic header-controls-search" onClick={handlerClick}></div>
+			<form data-id="search-form" className={`header-controls-search-form form-inline ${visible}`} onSubmit={handlerSubmit}>
+				<input className="form-control" placeholder="Поиск" onChange={handlerChange}></input>
 			</form>
 		</>
 	)

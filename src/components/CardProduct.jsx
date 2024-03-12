@@ -1,14 +1,14 @@
 import { useDispatch} from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getPorduct } from "../redux/stateProduct";
+import { getProduct } from "../redux/stateProduct";
 
 const CardProduct = ({id, title, price, images, keyID}) => {
 	const dispatch = useDispatch();
 	const navigation = useNavigate();
 
-	function hendlerClick( idProduct ){
-		dispatch(getPorduct(idProduct));
-		navigation(`/catalog/${id}.html.`);
+	function handlerClick( idProduct ){
+		dispatch(getProduct(idProduct));
+		navigation(`/catalog/${id}`);
 	}
 
 	return (
@@ -18,7 +18,7 @@ const CardProduct = ({id, title, price, images, keyID}) => {
 			<div className="card-body-product">
 				<p className="card-text">{title}</p>
 				<p className="card-text">{price} {`\u{20BD}`}</p>
-				<button className="btn btn-outline-primary" onClick={() => hendlerClick(id)}>Заказать</button>
+				<button className="btn btn-outline-primary" onClick={() => handlerClick(id)}>Заказать</button>
 			</div>
 		</div>
 	</div>

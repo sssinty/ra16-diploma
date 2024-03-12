@@ -5,6 +5,7 @@ import FromHeader from "../form/FormHeader";
 const Header = () => {
 	const {quantityPositions} = useSelector((cart) => cart.cart);
 	const navigation = useNavigate();
+	
 	return (
 		<header className="container">
 		<div className="row">
@@ -19,19 +20,19 @@ const Header = () => {
 								<NavLink className="nav-link" to="/">Главная</NavLink>
 							</li>
 							<li className="nav-item">
-								<NavLink className="nav-link" to="/catalog.html">Каталог</NavLink>
+								<NavLink className="nav-link" to="/catalog">Каталог</NavLink>
 							</li>
 							<li className="nav-item">
-								<NavLink className="nav-link" to="/about.html">О магазине</NavLink>
+								<NavLink className="nav-link" to="/about">О магазине</NavLink>
 							</li>
 							<li className="nav-item">
-								<NavLink className="nav-link" to="/contacts.html">Контакты</NavLink>
+								<NavLink className="nav-link" to="/contacts">Контакты</NavLink>
 							</li>
 						</ul>
 						<div>
 							<div className="header-controls-pics">
 								{<FromHeader />}
-								<div className="header-controls-pic header-controls-cart" onClick={() => quantityPositions !== 0 ? navigation("/cart.html.") : ''}>
+								<div className="header-controls-pic header-controls-cart" onClick={() => quantityPositions !== 0 ? navigation("/cart") : ''}>
 									{quantityPositions !== 0 ? <div className="header-controls-cart-full">{quantityPositions}</div> : ''}
 									<div className="header-controls-cart-menu"></div>
 								</div>

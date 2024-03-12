@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const getPorduct = createAsyncThunk(
+export const getProduct = createAsyncThunk(
 	'get/Product',
 	async (id) => {
 		const response = await axios.get(`http://localhost:7070/api/items/${id}`);
@@ -10,7 +10,7 @@ export const getPorduct = createAsyncThunk(
 )
 
 const initialState = {
-	statusLoade: 'loading',
+	statusLoader: 'loading',
 	error: null,
 	product: {}
 }
@@ -20,18 +20,18 @@ const stateProduct = createSlice({
 	initialState,
 	reducers: {
 
-	}, extraReducers: (bulider) => {
-		bulider
-		.addCase(getPorduct.pending, (state) => {
-			state.statusLoade = 'loading',
+	}, extraReducers: (builder) => {
+		builder
+		.addCase(getProduct.pending, (state) => {
+			state.statusLoader = 'loading',
 			state.error = null
 		})
-		.addCase(getPorduct.fulfilled, (state, action) => {
-			state.statusLoade = 'loade',
+		.addCase(getProduct.fulfilled, (state, action) => {
+			state.statusLoader = 'loade',
 			state.product = action.payload
 		})
-		.addCase(getPorduct.rejected, (state, action) => {
-			state.statusLoade = 'failed',
+		.addCase(getProduct.rejected, (state, action) => {
+			state.statusLoader = 'failed',
 			state.error = action.payload
 		})
 	}

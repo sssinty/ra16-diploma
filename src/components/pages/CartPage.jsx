@@ -7,7 +7,7 @@ import { clearCartState, postOrder, removeProduct } from "../../redux/stateCart"
 import { useEffect, useState } from "react";
 
 const CartPage = () => {
-	const {cartProduct, fullPrice, quantityPositions, statusLoade} = useSelector((cart) => cart.cart);
+	const {cartProduct, fullPrice, quantityPositions, statusLoader} = useSelector((cart) => cart.cart);
 	const dispatch = useDispatch();
 	const navigation = useNavigate();
 	const [transportationRules, setRules] = useState(false);
@@ -30,16 +30,16 @@ const CartPage = () => {
 		return result[0];
 	}
 
-	function hendlerSubmit( event ) {
+	function handlerSubmit( event ) {
 		event.preventDefault();
 	}
 
-	function hendlerClickRemove ( event ) {
+	function handlerClickRemove ( event ) {
 		const target = event.target;
 		dispatch(removeProduct({id: target.parentNode.parentNode.id}));
 	} 
 	
-	function chengeCheckbox() {
+	function changeCheckbox() {
 		setRules(!transportationRules);
 	}
 
@@ -72,20 +72,20 @@ const CartPage = () => {
 	}
 
 	useEffect(() => {
-		if(statusLoade === 'loade') {
+		if(statusLoader === 'loade') {
 			const delayDebounceFn = setTimeout(() => {
 				navigation("/");
 				dispatch(clearCartState());
-			}, 1000)
+			}, 2000)
 			return () => clearTimeout(delayDebounceFn);
 		}
-  }, [statusLoade]);
+  }, [statusLoader]);
 
 	return(
 		<>
 			<Header />
-			{statusLoade === 'loade'
-			?	<div className="order-complite">
+			{statusLoader === 'loade'
+			?	<div className="order-complete">
 					<h2>Спасибо за заказ!</h2>
 				</div>
 
@@ -112,12 +112,12 @@ const CartPage = () => {
 											return <>
 												<tr key={id} id={product.id}>
 													<td scope="row">{id+1}</td>
-													<td><NavLink to={`/catalog/${product.id}.html`}>{product.title}</NavLink></td>
+													<td><NavLink to={`/catalog/${product.id}`}>{product.title}</NavLink></td>
 													<td>{product.sizes.size}</td>
 													<td>{product.pairsQuantity}</td>
 													<td>{product.price} руб.</td>
 													<td>{product.price} руб.</td>
-													<td><button className="btn btn-outline-danger btn-sm" onClick={hendlerClickRemove}>Удалить</button></td>
+													<td><button className="btn btn-outline-danger btn-sm" onClick={handlerClickRemove}>Удалить</button></td>
 												</tr>
 											</>
 										})}
@@ -131,7 +131,7 @@ const CartPage = () => {
 							<section className="order">
 								<h2 className="text-center">Оформить заказ</h2>
 								<div className="card" style={{"maxWidth": "30rem",  "margin": "0 auto"}}>
-									<form className="card-body"  onSubmit={hendlerSubmit}>
+									<form className="card-body"  onSubmit={handlerSubmit}>
 										<div className="form-group">
 											<label htmlFor="phone">Телефон</label>
 											<input className="form-control" id="phone" placeholder="Ваш телефон" onChange={changePhoneOrder}></input>
@@ -141,7 +141,7 @@ const CartPage = () => {
 											<input className="form-control" id="address" placeholder="Адрес доставки" onChange={changeAddressOrder}></input>
 										</div>
 										<div className="form-group form-check">
-											<input type="checkbox" className="form-check-input" id="agreement" onChange={chengeCheckbox}></input>
+											<input type="checkbox" className="form-check-input" id="agreement" onChange={changeCheckbox}></input>
 											<label className="form-check-label" htmlFor="agreement">Согласен с правилами доставки</label>
 										</div>
 										<button disabled={!transportationRules? true : false} type="submit" className="btn btn-outline-secondary" onClick={designOrder}>Оформить</button>
