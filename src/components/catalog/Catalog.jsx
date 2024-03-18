@@ -43,10 +43,12 @@ const Catalog = () => {
 	useEffect(() => {
 		statusLoaderSearch === 'failed' && dispatch(searchCatalog(textSearch));
 	}, [statusLoaderSearch]);
+	
+	console.log(statusLoaderSearch)
 
 	function handlerClickCategories( event ) {
 		const id = event.target.parentNode.id;
-
+		console.log(id)
 		if(textSearch) {
 			dispatch(searchCatalog(textSearch));
 			dispatch(setID(Number(id)));
@@ -63,7 +65,7 @@ const Catalog = () => {
 	}
 
 	function handlerClickMore() {
-		dispatch(getMoreCatalog(categoriesID));
+		textSearch ? dispatch(getMoreCatalog(categoriesID, textSearch)) : dispatch(getMoreCatalog(categoriesID));
 		setVision(true);
 	}
 	

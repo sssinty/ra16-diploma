@@ -1,6 +1,6 @@
 import {useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setTextFormCatalog } from "../../redux/stateCatalog";
+import { searchCatalog, setTextFormCatalog } from "../../redux/stateCatalog";
 import { useState } from "react";
 
 const FromHeader = () => {
@@ -25,6 +25,7 @@ const FromHeader = () => {
 		} else if (text === '') {
 			setVisible('invisible');
 		} else {
+			dispatch(searchCatalog(text))
 			dispatch(setTextFormCatalog(text));
 			navigation('/catalog');
 		}

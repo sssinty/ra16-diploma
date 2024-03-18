@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector} from "react-redux";
-import { searchCatalog, setTextFormCatalog } from "../../redux/stateCatalog";
+import { getCatalog, getCategoriesID, searchCatalog, setTextFormCatalog } from "../../redux/stateCatalog";
 
 const FormCatalog = () => {
-	const textState = useSelector((state) => state.state.textSearch);
-	const [text, setText] = useState('')
+	const { textState, categoriesID} = useSelector((state) => state.state);
+	const [text, setText] = useState('');
+	const [sendStatus, setSendStatus] = useState(false)
 	const dispatch = useDispatch();
 
 	function handlerChange(event) {
 		const target = event.target;
 		setText(target.value);
+		setSendStatus(true)
 	}
 
 	function handlerSubmit (event) {
@@ -21,11 +23,20 @@ const FormCatalog = () => {
 	},[]);
 
 	useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-			dispatch(searchCatalog(text)),
-			dispatch(setTextFormCatalog(text))
-    }, 3000);
-    return () => clearTimeout(delayDebounceFn);
+		if(sendStatus) {
+			const delayDebounceFn = setTimeout(() => {
+				if(categoriesID && text == "") {
+					categoriesID !== 0 ?	dispatch(getCategoriesID(categoriesID))  : dispatch(getCatalog());
+					dispatch(setTextFormCatalog(text));
+					setSendStatus(false);
+				} else {
+					dispatch(searchCatalog(text));
+					dispatch(setTextFormCatalog(text));
+					setSendStatus(false);
+				}
+			}, 3000);
+			return () => clearTimeout(delayDebounceFn);
+		}
   }, [text]);
 
 	return (

@@ -35,11 +35,14 @@ export const getCategoriesID = createAsyncThunk(
 
 export const getMoreCatalog = createAsyncThunk(
 	'get/MoreCatalog',
-	async (id) => {
+	async (id, text) => {
 		if(id === 0) {
 			const response = await axios.get('http://localhost:7070/api/items?offset=6');
 			return response.data;
-		} else {
+		// }else if(text && id) {
+		// 	const response = await axios.get(`http://localhost:7070/api/items?categoryId=${id}&offset=6?`)
+		// 	return response.data;
+		}else {
 			const response = await axios.get(`http://localhost:7070/api/items?categoryId=${id}&offset=6`);
 			return response.data;
 		}

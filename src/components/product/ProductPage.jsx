@@ -12,17 +12,13 @@ const ProductPage = () => {
 	const {product, statusLoader} = useSelector((goods) => goods.goods);
 	const [quantity, setQuantity] = useState(1);
 	const [selectedSize, setSelected] = useState(-1);
-	const [unload, setLoader] = useState(false);
 	const navigation = useNavigate();
 	const dispatch = useDispatch();
 	const { id } = useParams();
 
 	useEffect(() => {
-		const delayDebounceFn = setTimeout(() => {
-			statusLoader !== 'loade' && setLoader(true)
-		}, 11000)
-		return () => clearTimeout(delayDebounceFn);
-	},[]);
+		if (Object.keys(product).length === 0 && statusLoader !== 'faild') dispatch(getProduct(id))
+	}, [])
 
 	function handlerClickCart() {
 		const orderProduct = {
@@ -40,7 +36,7 @@ const ProductPage = () => {
 	function handlerClickReboot() {
 		dispatch(getProduct(id));
 	}
-
+	console.log(statusLoader)
 	return <>
 		<Header />
 		<main className="container">
@@ -49,12 +45,12 @@ const ProductPage = () => {
 					<Banner />
 					{
 						statusLoader !== 'loade' 
-						? !unload
-							?	<Preloader />  
-							: <div className="text-center">
+						? statusLoader === 'failed'
+							?	<div className="text-center">
 									<h2>Что-то пошло не так</h2>
 									<button className="btn btn-outline-primary" onClick={handlerClickReboot}>Перезагрузить</button>
 								</div>
+							: <Preloader />  
 						: <section className="catalog-item">
 								<h2 className="text-center">{product.title}</h2>
 								<div className="row">
