@@ -43,12 +43,9 @@ const Catalog = () => {
 	useEffect(() => {
 		statusLoaderSearch === 'failed' && dispatch(searchCatalog(textSearch));
 	}, [statusLoaderSearch]);
-	
-	console.log(statusLoaderSearch)
 
 	function handlerClickCategories( event ) {
 		const id = event.target.parentNode.id;
-		console.log(id)
 		if(textSearch) {
 			dispatch(searchCatalog(textSearch));
 			dispatch(setID(Number(id)));

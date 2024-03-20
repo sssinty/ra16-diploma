@@ -25,8 +25,9 @@ const stateCart = createSlice({
 			if(Object.keys(state.cartProduct).length === 0) {
 				state.cartProduct.push(action.payload);
 			} else {
-				state.cartProduct.map((product) => {
-					product.title === action.payload.title && product.sizes.size === action.payload.sizes.size 
+				state.cartProduct.map((elem) => {
+					console.log(state.cartProduct.map((product) => ({ ...product, pairsQuantity: product.pairsQuantity + action.payload.pairsQuantity })))
+					elem.title === action.payload.title && elem.sizes.size === action.payload.sizes.size 
 					? state.cartProduct = state.cartProduct.map((product) => ({ ...product, pairsQuantity: product.pairsQuantity + action.payload.pairsQuantity }))
 					: state.cartProduct.push(action.payload);
 				});

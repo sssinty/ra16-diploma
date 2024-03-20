@@ -13,7 +13,6 @@ const CartPage = () => {
 	const [transportationRules, setRules] = useState(false);
 	const [phoneNumber, setPhoneNumber] = useState();
 	const [addressOrder, setAddress] = useState();
-	const [savedCartData, setSavedCartData] = useState();
 
 	function getRandomNumb() {
 		const range = 1000;
@@ -63,20 +62,14 @@ const CartPage = () => {
 			items: [
 				{
 					id : getRandomNumb(),
-					price: savedCartData.price,
-					count: savedCartData.positions
+					price: fullPrice,
+					count: quantityPositions
 				}
 			]
 		}
 
 		dispatch(postOrder(order));
 	}
-
-	useEffect(() => {
-		const initialValue = JSON.parse(localStorage.getItem("saveCart"));
-		setSavedCartData(initialValue);
-		console.log(initialValue)
-	}, [])
 
 	useEffect(() => {
 		if(statusLoader === 'loade') {
@@ -88,18 +81,6 @@ const CartPage = () => {
 		}
   }, [statusLoader]);
 
-	useEffect(() => {
-		const saveCart = {
-			product : cartProduct,
-			price : fullPrice,
-			positions: quantityPositions,
-		}
-		localStorage.setItem("saveCart", JSON.stringify(saveCart));
-	}, [cartProduct]);
-
-
-
-	console.log(savedCartData)
 	return(
 		<>
 			<Header />
@@ -127,7 +108,7 @@ const CartPage = () => {
 										</tr>
 									</thead>
 									<tbody>
-										{savedCartData.product.map((product, id) => {
+										{cartProduct.map((product, id) => {
 											return <>
 												<tr key={id} id={product.id}>
 													<td scope="row">{id+1}</td>

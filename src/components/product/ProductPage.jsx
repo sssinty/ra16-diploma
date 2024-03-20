@@ -36,7 +36,7 @@ const ProductPage = () => {
 	function handlerClickReboot() {
 		dispatch(getProduct(id));
 	}
-	console.log(statusLoader)
+
 	return <>
 		<Header />
 		<main className="container">
