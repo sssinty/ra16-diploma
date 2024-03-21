@@ -3,7 +3,7 @@ import { NavLink, useNavigate} from "react-router-dom";
 import Header from "../header/Header";
 import Banner from "../banner/Banner";
 import Footer from "../footer/Footer";
-import { clearCartState, postOrder, removeProduct } from "../../redux/stateCart";
+import { addProduct, clearCartState, postOrder, removeProduct } from "../../redux/stateCart";
 import { useEffect, useState } from "react";
 
 const CartPage = () => {
@@ -37,6 +37,7 @@ const CartPage = () => {
 	function handlerClickRemove ( event ) {
 		const target = event.target;
 		dispatch(removeProduct({id: target.parentNode.parentNode.id}));
+		window.localStorage.clear();
 	} 
 	
 	function changeCheckbox() {
@@ -70,6 +71,12 @@ const CartPage = () => {
 
 		dispatch(postOrder(order));
 	}
+	useEffect(() => {
+		if(cartProduct.length === 0) {
+			const initiaValue = JSON.parse(window.localStorage.getItem('saveCart'));
+			initiaValue.map((elem) => {dispatch(addProduct(elem))});
+		}
+	},[]);
 
 	useEffect(() => {
 		if(statusLoader === 'loade') {
@@ -80,6 +87,13 @@ const CartPage = () => {
 			return () => clearTimeout(delayDebounceFn);
 		}
   }, [statusLoader]);
+
+	useEffect(() => {
+		if(cartProduct.length !== 0) {
+			window.localStorage.setItem('saveCart', JSON.stringify(cartProduct));
+			window.localStorage.setItem('position', JSON.stringify(quantityPositions));
+		}
+	},[cartProduct]);
 
 	return(
 		<>
@@ -110,9 +124,9 @@ const CartPage = () => {
 									<tbody>
 										{cartProduct.map((product, id) => {
 											return <>
-												<tr key={id} id={product.id}>
+												<tr key={id} id={product?.id}>
 													<td scope="row">{id+1}</td>
-													<td><NavLink to={`/catalog/${product.id}`}>{product.title}</NavLink></td>
+													<td><NavLink to={`/catalog/${product?.id}`}>{product?.title}</NavLink></td>
 													<td>{product.sizes.size}</td>
 													<td>{product.pairsQuantity}</td>
 													<td>{product.price} руб.</td>

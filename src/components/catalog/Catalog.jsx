@@ -62,7 +62,7 @@ const Catalog = () => {
 	}
 
 	function handlerClickMore() {
-		textSearch ? dispatch(getMoreCatalog(categoriesID, textSearch)) : dispatch(getMoreCatalog(categoriesID));
+		dispatch(getMoreCatalog(categoriesID));
 		setVision(true);
 	}
 	

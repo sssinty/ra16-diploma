@@ -1,11 +1,20 @@
 import { NavLink, useNavigate} from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch} from "react-redux";
 import FromHeader from "../form/FormHeader";
+import { useEffect } from "react";
+import { updateQuantityPositions } from "../../redux/stateCart";
 
 const Header = () => {
 	const {quantityPositions} = useSelector((cart) => cart.cart);
 	const navigation = useNavigate();
+	const dispatch = useDispatch();
 	
+	useEffect(() => {
+		const initiaValue = JSON.parse(window.localStorage.getItem('position'));
+		const savedQuantityPositions = initiaValue !== null ? initiaValue : 0;
+		quantityPositions === 0 && savedQuantityPositions !== 0 && dispatch(updateQuantityPositions(savedQuantityPositions));
+	}, []);
+
 	return (
 		<header className="container">
 		<div className="row">

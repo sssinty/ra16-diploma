@@ -23,14 +23,21 @@ const stateCart = createSlice({
 	reducers: {
 		addProduct(state, action) {
 			if(Object.keys(state.cartProduct).length === 0) {
-				state.cartProduct.push(action.payload);
+				state.cartProduct = [action.payload]
 			} else {
-				state.cartProduct.map((elem) => {
-					console.log(state.cartProduct.map((product) => ({ ...product, pairsQuantity: product.pairsQuantity + action.payload.pairsQuantity })))
-					elem.title === action.payload.title && elem.sizes.size === action.payload.sizes.size 
-					? state.cartProduct = state.cartProduct.map((product) => ({ ...product, pairsQuantity: product.pairsQuantity + action.payload.pairsQuantity }))
-					: state.cartProduct.push(action.payload);
-				});
+				const isNotNewProduct = state.cartProduct.some((elem) => elem.title === action.payload.title && elem.sizes.size === action.payload.sizes.size)
+					if(isNotNewProduct) {
+						state.cartProduct = state.cartProduct.map((elem) => {
+							if(elem.title === action.payload.title && elem.sizes.size === action.payload.sizes.size) {
+								return { ...elem, pairsQuantity: elem.pairsQuantity + action.payload.pairsQuantity }
+							} else {
+								return elem
+							}
+						});
+					} else {
+						state.cartProduct = [...state.cartProduct, action.payload];
+					}
+
 			}
 
 			state.fullPrice = state.cartProduct.reduce((accumulator, current) => accumulator = accumulator + (current.price * current.pairsQuantity), 0);
@@ -52,8 +59,13 @@ const stateCart = createSlice({
 			state.cartProduct = [],
 			state.fullPrice = 0,
 			state.quantityPositions = 0,
-			state.statusLoader = 'loading'
-		}
+			state.statusLoader = 'loading',
+			window.localStorage.clear()
+		},
+
+		updateQuantityPositions(state, action) {
+			state.quantityPositions = action.payload
+		}, 
 		
 	}, extraReducers: (builder) => {
 		builder
@@ -71,5 +83,5 @@ const stateCart = createSlice({
 	}
 })
 
-export  const {addProduct, removeProduct, clearCartState} = stateCart.actions;
+export  const {addProduct, removeProduct, clearCartState, updateQuantityPositions} = stateCart.actions;
 export default stateCart.reducer

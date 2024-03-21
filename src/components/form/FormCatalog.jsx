@@ -3,7 +3,7 @@ import { useDispatch, useSelector} from "react-redux";
 import { getCatalog, getCategoriesID, searchCatalog, setTextFormCatalog } from "../../redux/stateCatalog";
 
 const FormCatalog = () => {
-	const { textState, categoriesID} = useSelector((state) => state.state);
+	const { textSearch, categoriesID} = useSelector((state) => state.state);
 	const [text, setText] = useState('');
 	const [sendStatus, setSendStatus] = useState(false)
 	const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const FormCatalog = () => {
 	}
 
 	useEffect(() => {
-		setText(textState);
+		textSearch && setText(textSearch)
 	},[]);
 
 	useEffect(() => {
