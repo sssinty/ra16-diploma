@@ -37,38 +37,38 @@ const Catalog = () => {
 	}, [statusLoaderCategories]);
 
 	useEffect(() => {
-		statusLoaderMore === 'failed' && dispatch(getMoreCatalog(categoriesID));
+		statusLoaderMore === 'failed' && dispatch(getMoreCatalog([categoriesID]));
 	}, [statusLoaderMore]);
 
 	useEffect(() => {
-		statusLoaderSearch === 'failed' && dispatch(searchCatalog(textSearch));
+		statusLoaderSearch === 'failed' && dispatch(searchCatalog([textSearch, categoriesID]));
 	}, [statusLoaderSearch]);
 
 	function handlerClickCategories( event ) {
 		const id = event.target.parentNode.id;
-		if(textSearch) {
-			dispatch(searchCatalog(textSearch));
+		if(textSearch !== "") {
+			dispatch(searchCatalog([textSearch, id]));
 			dispatch(setID(Number(id)));
-
+			
 			setActiveID(id);
 			setVision(false);
 		} else {
 			dispatch(getCategoriesID(id));
 			dispatch(setID(Number(id)));
-	
+			
 			setActiveID(id);
 			setVision(false);
 		}
 	}
 
 	function handlerClickMore() {
-		dispatch(getMoreCatalog(categoriesID));
+		textSearch !== '' ? dispatch(getMoreCatalog([categoriesID, textSearch])) : dispatch(getMoreCatalog([categoriesID]))
 		setVision(true);
 	}
 	
 	function handlerClickReboot () {
-		if(textSearch) {
-			dispatch(searchCatalog(textSearch));
+		if(textSearch !== "") {
+			dispatch(searchCatalog([textSearch, categoriesID]));
 		} else {
 			isActiveID !== 0 ? dispatch(getCategoriesID(isActiveID)) : dispatch(getCatalog());
 		}

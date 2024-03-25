@@ -35,8 +35,11 @@ export const getCategoriesID = createAsyncThunk(
 
 export const getMoreCatalog = createAsyncThunk(
 	'get/MoreCatalog',
-	async (id) => {
-		if(id === 0) {
+	async ([id, text]) => {
+		if(text !== undefined) {
+			const response = await axios.get(`http://localhost:7070/api/items?q=${text}&categoryId=${id}`)
+			return response.data;
+		}else if(id === 0) {
 			const response = await axios.get('http://localhost:7070/api/items?offset=6');
 			return response.data;
 		}else {
@@ -48,9 +51,14 @@ export const getMoreCatalog = createAsyncThunk(
 
 export const searchCatalog = createAsyncThunk(
 	'searchCatalog',
-	async (text) => {
-		const response = await axios.get(`http://localhost:7070/api/items?q=${text}`)
-		return response.data;
+	async ([text, id]) => {
+		if(id) {
+			const response = await axios.get(`http://localhost:7070/api/items?q=${text}&categoryId=${id}`)
+			return response.data;
+		} else {
+			const response = await axios.get(`http://localhost:7070/api/items?q=${text}`)
+			return response.data;
+		}
 	}
 )
 
@@ -149,11 +157,9 @@ const stateCatalog = createSlice({
 		})
 		.addCase(getMoreCatalog.fulfilled, (state, action) => {
 			state.statusLoaderMore = 'loade',
-			action.payload.map((elem) => {
-				const textLowerCase = state.textSearch.toLowerCase();
-				if(state.textSearch !== "") {
-					elem.title.toLowerCase().includes(textLowerCase) && state.catalog.push(elem);
-				} else {
+			action.payload.map((elem, i) => {
+				console.log(elem.category !== state.catalog[i].category && elem.title !== state.catalog[i].title)
+				if(elem.title !== state.catalog[i].title) {
 					state.catalog.push(elem);
 				}
 			})
@@ -171,7 +177,7 @@ const stateCatalog = createSlice({
 		})
 		.addCase(searchCatalog.fulfilled, (state, action) => {
 			state.statusLoaderCatalog = 'loade',
-			state.categoriesID === 0 ? state.catalog = action.payload : state.catalog = action.payload.filter((elem) => state.categoriesID === elem.category)
+			state.catalog = action.payload
 		})
 		.addCase(searchCatalog.rejected, (state, action) => {
 			state.statusLoaderCatalog = 'failed',

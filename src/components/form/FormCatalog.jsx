@@ -30,7 +30,7 @@ const FormCatalog = () => {
 					dispatch(setTextFormCatalog(text));
 					setSendStatus(false);
 				} else {
-					dispatch(searchCatalog(text));
+					dispatch(searchCatalog([text, categoriesID]));
 					dispatch(setTextFormCatalog(text));
 					setSendStatus(false);
 				}

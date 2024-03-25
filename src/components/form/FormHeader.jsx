@@ -25,7 +25,6 @@ const FromHeader = () => {
 		} else if (text === '') {
 			setVisible('invisible');
 		} else {
-			console.log(text)
 			dispatch(searchCatalog(text))
 			dispatch(setTextFormCatalog(text));
 			navigation('/catalog');
